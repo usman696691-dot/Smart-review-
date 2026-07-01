@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Business – Share Your Experience</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --card: #181c27;
+      --border: #2a2f3e;
+      --gold: #f5c518;
+      --gold-dim: #7a6210;
+      --text: #eef0f6;
+      --muted: #7b82a0;
+      --accent: #4f8ef7;
+      --danger: #e05c5c;
+      --success: #3ecf8e;
+      --radius: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 36px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+
+    .logo-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f8ef7, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+
+    /* ── Stars ── */
+    .stars-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .star {
+      font-size: 2.6rem;
+      cursor: pointer;
+      color: var(--gold-dim);
+      transition: color 0.15s, transform 0.15s;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .star:hover,
+    .star.hovered,
+    .star.selected {
+      color: var(--gold);
+      transform: scale(1.15);
+    }
+
+    .rating-hint {
+      font-size: 0.82rem;
+      color: var(--muted);
+      min-height: 20px;
+      margin-bottom: 28px;
+      transition: color 0.2s;
+    }
+
+    /* ── Sections ── */
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp 0.3s ease; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Feedback form (1–3 stars) ── */
+    .feedback-box {
+      background: #0f1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .feedback-box label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      resize: none;
+      outline: none;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    textarea::placeholder { color: var(--muted); }
+
+    .privacy-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .privacy-note span { font-size: 1rem; }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn:hover { opacity: 0.88; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-google {
+      background: #fff;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .google-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ── Thank you screen ── */
+    .thank-icon {
+      font-size: 3rem;
+      margin-bottom: 14px;
+    }
+
+    .thank-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .thank-body {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    .powered {
+      font-size: 0.7rem;
+      color: #3a3f52;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Header (always visible) -->
+  <div class="logo-ring">⭐</div>
+  <h1>How was your visit?</h1>
+  <p class="subtitle">Your feedback helps us do better.<br>It only takes 10 seconds.</p>
+
+  <!-- Star Rating -->
+  <div id="star-section">
+    <p class="stars-label">Tap to rate</p>
+    <div class="stars" id="stars">
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
+    </div>
+    <p class="rating-hint" id="rating-hint">—</p>
+  </div>
+
+  <!-- Section: Negative feedback (1–3 stars) -->
+  <div class="section" id="section-negative">
+    <hr class="divider">
+    <div class="feedback-box">
+      <label>What can we improve?</label>
+      <textarea id="feedback-text" placeholder="Tell us what went wrong or what we could do better…" rows="5"></textarea>
+    </div>
+    <div class="privacy-note">
+      <span>🔒</span> Your feedback goes directly to our manager — not online.
+    </div>
+    <button class="btn btn-primary" onclick="submitFeedback()">Send to Manager</button>
+  </div>
+
+  <!-- Section: Positive (4–5 stars) -->
+  <div class="section" id="section-positive">
+    <hr class="divider">
+    <p class="subtitle" style="margin-bottom: 20px;">
+      We're so glad you had a great experience! 🎉<br>Would you mind sharing it on Google?
+    </p>
+    <button class="btn btn-google" onclick="goToGoogle()">
+      <!-- Google G icon inline SVG -->
+      <svg class="google-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.4 13 17.8 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 6.9-10 6.9-17z"/>
+        <path fill="#FBBC05" d="M10.4 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6z"/>
+        <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.8l-7.8 6C6.6 42.6 14.6 48 24 48z"/>
+      </svg>
+      Leave a Google Review
+    </button>
+  </div>
+
+  <!-- Section: Thank you (after negative submission) -->
+  <div class="section" id="section-thankyou">
+    <hr class="divider">
+    <div class="thank-icon">🙏</div>
+    <p class="thank-title">Thank you!</p>
+    <p class="thank-body">
+      We've received your feedback and our manager will review it personally.<br><br>
+      We hope to make it right next time.
+    </p>
+  </div>
+
+  <p class="powered">Powered by Smart Review</p>
+</div>
+
+<script>
+  const hints = ['', 'Very disappointed', 'Not satisfied', 'It was okay', 'Really enjoyed it', 'Absolutely loved it!'];
+  let selectedRating = 0;
+
+  const stars = document.querySelectorAll('.star');
+  const hint  = document.getElementById('rating-hint');
+
+  stars.forEach(star => {
+    star.addEventListener('mouseenter', () => highlightStars(+star.dataset.value));
+    star.addEventListener('mouseleave', () => highlightStars(selectedRating));
+    star.addEventListener('click', () => selectRating(+star.dataset.value));
+  });
+
+  function highlightStars(n) {
+    stars.forEach(s => {
+      const v = +s.dataset.value;
+      s.classList.toggle('hovered', v <= n && n !== selectedRating);
+      s.classList.toggle('selected', v <= selectedRating);
+    });
+    hint.textContent = hints[n] || hints[selectedRating] || '—';
+  }
+
+  function selectRating(n) {
+    selectedRating = n;
+    stars.forEach(s => {
+      s.classList.remove('hovered');
+      s.classList.toggle('selected', +s.dataset.value <= n);
+    });
+    hint.textContent = hints[n];
+
+    // Route after a short pause so user sees their selection
+    setTimeout(() => {
+      if (n <= 3) {
+        showSection('section-negative');
+      } else {
+        showSection('section-positive');
+      }
+    }, 400);
+  }
+
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function submitFeedback() {
+    const text = document.getElementById('feedback-text').value.trim();
+    if (!text) {
+      alert('Please write a short note before sending.');
+      return;
+    }
+
+    // ── FORMSPREE: replace YOUR_FORM_ID with your actual Formspree endpoint ──
+    const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        rating: selectedRating + ' star(s)',
+        feedback: text,
+        _subject: '⚠️ New Customer Feedback — ' + selectedRating + ' Star(s)'
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        showSection('section-thankyou');
+      } else {
+        alert('Something went wrong. Please try again.');
+      }
+    })
+    .catch(() => {
+      // For local testing without Formspree, still show thank you
+      showSection('section-thankyou');
+    });
+  }
+
+  function goToGoogle() {
+    // ── Replace this URL with your real Google Review link ──
+    const GOOGLE_REVIEW_URL = 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review';
+    window.open(GOOGLE_REVIEW_URL, '_blank');
+  }
+</script>
+
+</body>
+</html>
